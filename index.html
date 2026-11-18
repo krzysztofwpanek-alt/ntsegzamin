@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Próbny egzamin na broń</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Układ: górny pasek kontaktowy, nagłówek z marką i menu, hero z wezwaniem do działania, siatka kart trybów, stopka z danymi kontaktowymi */
+  --ink:#16202b;
+  --muted:#5b6774;
+  --bg:#f3f5f7;
+  --surface:#ffffff;
+  --bar:#121a23;
+  --bar-ink:#e8edf2;
+  --line:#dde3e9;
+  --accent:#a8d144;     /* zieleń: poprawne, akcje */
+  --accent-ink:#1d2a06;
+  --bad:#e0262b;        /* czerwień: błąd, czas */
+  --info:#1e73be;       /* niebieski: informacja */
+  --font-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --font-body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#e9eef3;--muted:#9aa7b4;--bg:#0e141a;--surface:#17202a;--bar:#070b0f;--bar-ink:#e8edf2;--line:#2a3542;
+    --accent:#b4dc52;--accent-ink:#17220a;--bad:#ff5a5e;--info:#5aa6ea;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e9eef3;--muted:#9aa7b4;--bg:#0e141a;--surface:#17202a;--bar:#070b0f;--bar-ink:#e8edf2;--line:#2a3542;
+  --accent:#b4dc52;--accent-ink:#17220a;--bad:#ff5a5e;--info:#5aa6ea;color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.55}
+a{color:var(--info)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--info);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.02em;line-height:1.05;text-wrap:balance;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* górny pasek */
+.topbar{background:var(--bar);color:var(--bar-ink);font-size:14px}
+.topbar .wrap{display:flex;gap:20px;justify-content:space-between;align-items:center;min-height:36px;flex-wrap:wrap}
+.topbar span{opacity:.8}
+
+/* nagłówek */
+header.site{background:color-mix(in srgb,var(--bar) 92%,var(--accent));color:var(--bar-ink);border-bottom:4px solid var(--accent)}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px}
+.brand{display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none}
+.brand svg{flex:none}
+.brand b{font-family:var(--font-display);font-size:26px;letter-spacing:.04em;text-transform:uppercase;display:block;line-height:1}
+.brand small{display:block;font-size:13px;opacity:.75;letter-spacing:.06em;text-transform:uppercase}
+nav.main{display:flex;gap:6px;flex-wrap:wrap}
+nav.main button{background:transparent;border:1px solid transparent;color:var(--bar-ink);padding:8px 14px;border-radius:2px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:14px}
+nav.main button:hover{border-color:color-mix(in srgb,var(--bar-ink) 30%,transparent)}
+nav.main button[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+
+/* hero */
+.hero{background:linear-gradient(180deg,var(--bar),color-mix(in srgb,var(--bar) 80%,var(--bg)));color:var(--bar-ink);padding:44px 0 52px}
+.hero h1{font-size:clamp(36px,6vw,60px);max-width:16ch}
+.hero p{max-width:60ch;opacity:.88;margin:14px 0 24px}
+.cta{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--accent-ink);border:0;padding:14px 26px;font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:2px}
+.cta.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.facts{display:flex;gap:28px;flex-wrap:wrap;margin-top:30px;font-variant-numeric:tabular-nums}
+.facts div b{display:block;font-family:var(--font-display);font-size:34px;color:var(--accent);line-height:1}
+.facts div span{font-size:14px;opacity:.8;text-transform:uppercase;letter-spacing:.05em}
+
+/* sekcje */
+main{padding:36px 0 56px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.section-head h2{font-size:32px}
+.label{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:3px 8px;border-radius:2px}
+.label.info{background:var(--info);color:#fff}
+.label.bad{background:var(--bad);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column}
+.card .thumb{height:8px;background:var(--accent)}
+.card .thumb.info{background:var(--info)}
+.card .thumb.bad{background:var(--bad)}
+.card .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card h3{font-size:24px}
+.card p{margin:0;color:var(--muted)}
+.card .more{margin-top:auto;align-self:start;background:var(--ink);color:var(--surface);border:0;padding:9px 16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:14px;border-radius:2px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px;color:var(--muted);font-size:14px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+/* quiz */
+.quiz{background:var(--surface);border:1px solid var(--line)}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.timer{font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:.04em}
+.timer.low{color:var(--bad)}
+.progress{height:6px;background:var(--line)}
+.progress div{height:100%;background:var(--accent);transition:width .25s}
+.q{padding:24px 20px}
+.q .meta{color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.q h3{font-family:var(--font-body);text-transform:none;letter-spacing:0;font-size:22px;line-height:1.35;font-weight:700;max-width:65ch}
+.opts{display:grid;gap:10px;margin:20px 0 0;padding:0;list-style:none}
+.opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);padding:12px 14px;border-radius:2px}
+.opt:hover{border-color:var(--muted)}
+.opt .let{flex:none;width:30px;height:30px;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:18px;background:var(--surface);border:2px solid var(--line)}
+.opt.sel{border-color:var(--info)}
+.opt.sel .let{background:var(--info);border-color:var(--info);color:#fff}
+.opt.ok{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--surface))}
+.opt.ok .let{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface))}
+.opt.no .let{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt[disabled]{cursor:default}
+.explain{margin-top:16px;padding:12px 14px;border-left:4px solid var(--info);background:color-mix(in srgb,var(--info) 8%,var(--surface));max-width:75ch}
+.explain b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--info)}
+.q-nav{display:flex;justify-content:space-between;gap:10px;padding:0 20px 22px;flex-wrap:wrap}
+.btn{background:var(--surface);color:var(--ink);border:2px solid var(--ink);padding:10px 18px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:14px;border-radius:2px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn[disabled]{opacity:.4;cursor:default}
+.dots{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 20px}
+.dots button{width:32px;height:32px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font-size:13px;font-weight:700;padding:0;border-radius:2px;font-variant-numeric:tabular-nums}
+.dots button.done{background:var(--info);border-color:var(--info);color:#fff}
+.dots button.cur{border-color:var(--ink)}
+.dots button.ok{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.dots button.no{background:var(--bad);border-color:var(--bad);color:#fff}
+
+/* wynik */
+.result{padding:26px 20px;display:grid;gap:18px}
+.verdict{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.score{font-family:var(--font-display);font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.verdict .stamp{font-family:var(--font-display);font-size:28px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border:3px solid currentColor;transform:rotate(-3deg)}
+.pass{color:color-mix(in srgb,var(--accent) 70%,var(--ink))}
+.fail{color:var(--bad)}
+.review{display:grid;gap:12px}
+.review .item{border:1px solid var(--line);border-left:5px solid var(--bad);padding:12px 14px;background:var(--bg)}
+.review .item p{margin:4px 0}
+.review .item small{color:var(--muted)}
+
+table.hist{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line)}
+table.hist th,table.hist td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+table.hist th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.empty{color:var(--muted);padding:18px;background:var(--surface);border:1px dashed var(--line)}
+
+footer.site{background:var(--bar);color:var(--bar-ink);padding:34px 0;font-size:14px}
+footer.site .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+footer.site h4{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.06em;font-size:18px;margin:0 0 8px;color:var(--accent)}
+footer.site p{margin:0 0 6px;opacity:.85}
+footer.site a{color:var(--bar-ink)}
+.copy{border-top:1px solid color-mix(in srgb,var(--bar-ink) 15%,transparent);margin-top:22px;padding-top:14px;opacity:.6}
+[hidden]{display:none!important}
+@media (max-width:640px){
+  header.site .wrap{flex-direction:column;align-items:flex-start;padding:12px 20px}
+  .q h3{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <span>Szkolenie do egzaminu na pozwolenie na broń · cele kolekcjonerskie</span>
+  <span>Instruktor: Krzysztof Panek</span>
+</div></div>
+
+<header class="site"><div class="wrap">
+  <a class="brand" href="#start" aria-label="Strona główna">
+    <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+      <circle cx="23" cy="23" r="20" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="23" cy="23" r="12" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="23" cy="23" r="4.5" fill="#a8d144"/>
+      <path d="M23 0v9M23 37v9M0 23h9M37 23h9" stroke="currentColor" stroke-width="3"/>
+    </svg>
+    <span><b>Próbny egzamin</b><small>pozwolenie na broń · teoria</small></span>
+  </a>
+  <nav class="main" aria-label="Menu główne">
+    <button data-go="start" aria-current="page">Start</button>
+    <button data-go="egzamin">Egzamin próbny</button>
+    <button data-go="nauka">Nauka</button>
+    <button data-go="wyniki">Moje wyniki</button>
+  </nav>
+</div></header>
+
+<!-- START -->
+<section id="v-start">
+  <div class="hero"><div class="wrap">
+    <span class="label">Część teoretyczna</span>
+    <h1 style="margin-top:12px">Sprawdź się przed komisją</h1>
+    <p>20 losowych pytań jednokrotnego wyboru i 30 minut, tak jak na egzaminie przed Policją. Zdajesz przy co najmniej 18 poprawnych odpowiedziach. Po teście zobaczysz każdą pomyłkę z podstawą prawną.</p>
+    <div class="cta-row">
+      <button class="cta" data-go="egzamin">Rozpocznij egzamin</button>
+      <button class="cta ghost" data-go="nauka">Tryb nauki</button>
+    </div>
+    <div class="facts">
+      <div><b>20</b><span>pytań w teście</span></div>
+      <div><b>30 min</b><span>czasu</span></div>
+      <div><b>18/20</b><span>próg zaliczenia</span></div>
+      <div><b id="bankCount">–</b><span>pytań w bazie</span></div>
+    </div>
+  </div></div>
+  <main><div class="wrap">
+    <div class="section-head"><h2>Wybierz tryb</h2></div>
+    <div class="grid">
+      <article class="card"><div class="thumb"></div><div class="body">
+        <span class="label">Egzamin</span>
+        <h3>Egzamin próbny</h3>
+        <p>Warunki jak na egzaminie: losowe pytania, odliczanie czasu, wynik dopiero po zakończeniu.</p>
+        <button class="more" data-go="egzamin">Start</button>
+      </div></article>
+      <article class="card"><div class="thumb info"></div><div class="body">
+        <span class="label info">Nauka</span>
+        <h3>Cała baza po kolei</h3>
+        <p>Odpowiedź sprawdzana od razu, z wyjaśnieniem i numerem przepisu. Możesz wybrać dział.</p>
+        <button class="more" data-go="nauka">Ucz się</button>
+      </div></article>
+      <article class="card"><div class="thumb bad"></div><div class="body">
+        <span class="label bad">Powtórka</span>
+        <h3>Moje błędy</h3>
+        <p>Pytania, na które ostatnio odpowiedziałeś źle. Wracaj do nich, aż znikną z listy.</p>
+        <button class="more" data-go="bledy">Powtórz</button>
+      </div></article>
+    </div>
+    <div class="legend" aria-label="Legenda kolorów">
+      <span><i style="background:var(--accent)"></i>odpowiedź poprawna</span>
+      <span><i style="background:var(--bad)"></i>odpowiedź błędna, mało czasu</span>
+      <span><i style="background:var(--info)"></i>zaznaczona odpowiedź, wyjaśnienie</span>
+    </div>
+  </div></main>
+</section>
+
+<!-- DANE KURSANTA -->
+<section id="v-login" hidden>
+  <main><div class="wrap">
+    <div class="quiz"><form class="result" id="loginForm" novalidate>
+      <div><span class="label">Przed startem</span><h2 style="margin-top:8px">Kto zdaje?</h2></div>
+      <p style="margin:0;color:var(--muted);max-width:60ch">Po zdanym egzaminie wynik trafi automatycznie do instruktora. Podaj imię i nazwisko, pod którym jesteś zapisany na kurs.</p>
+      <div style="display:grid;gap:6px;max-width:420px">
+        <label for="fName"><b>Imię i nazwisko</b></label>
+        <input id="fName" name="name" autocomplete="name" required style="font:inherit;padding:10px 12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)">
+      </div>
+      <div style="display:grid;gap:6px;max-width:420px">
+        <label for="fMail"><b>Twój e-mail</b> <span style="color:var(--muted)">(opcjonalnie, do odpowiedzi instruktora)</span></label>
+        <input id="fMail" name="email" type="email" autocomplete="email" style="font:inherit;padding:10px 12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)">
+      </div>
+      <p id="loginErr" style="margin:0;color:var(--bad)" hidden>Wpisz imię i nazwisko, żeby rozpocząć.</p>
+      <div class="cta-row"><button class="btn primary" type="submit">Rozpocznij egzamin</button><button class="btn" type="button" data-go="start">Wróć</button></div>
+    </form></div>
+  </div></main>
+</section>
+
+<!-- QUIZ (egzamin i nauka) -->
+<section id="v-quiz" hidden>
+  <main><div class="wrap">
+    <div class="section-head">
+      <div><span class="label" id="quizLabel">Egzamin</span><h2 id="quizTitle" style="margin-top:8px">Egzamin próbny</h2></div>
+      <div id="catPick" hidden>
+        <label for="cat" style="font-size:14px;color:var(--muted);display:block">Dział</label>
+        <select id="cat" style="font:inherit;padding:8px 10px;border:2px solid var(--line);background:var(--surface);color:var(--ink)"></select>
+      </div>
+    </div>
+    <div class="quiz">
+      <div class="quiz-top">
+        <span id="counter">Pytanie 1 z 20</span>
+        <span class="timer" id="timer" aria-live="off">30:00</span>
+      </div>
+      <div class="progress"><div id="bar" style="width:0"></div></div>
+      <div class="q" id="qBox"></div>
+      <div class="q-nav">
+        <button class="btn" id="prev">Poprzednie</button>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" id="next">Następne</button>
+          <button class="btn primary" id="finish">Zakończ egzamin</button>
+        </div>
+      </div>
+      <div class="dots" id="dots" aria-label="Przejdź do pytania"></div>
+    </div>
+  </div></main>
+</section>
+
+<!-- WYNIK -->
+<section id="v-result" hidden>
+  <main><div class="wrap">
+    <div class="quiz"><div class="result" id="resultBox"></div></div>
+  </div></main>
+</section>
+
+<!-- WYNIKI -->
+<section id="v-wyniki" hidden>
+  <main><div class="wrap">
+    <div class="section-head"><h2>Moje wyniki</h2><button class="btn" id="clearHist">Wyczyść historię</button></div>
+    <div id="histBox"></div>
+    <p style="color:var(--muted);font-size:14px">Historia zapisuje się tylko w tej przeglądarce, na tym urządzeniu.</p>
+  </div></main>
+</section>
+
+<footer class="site"><div class="wrap">
+  <div>
+    <h4>Próbny egzamin</h4>
+    <p>Pytania przygotowane na podstawie ustawy o broni i amunicji (t.j. Dz.U. 2024 poz. 485 ze zm.), Kodeksu karnego i zasad bezpieczeństwa na strzelnicy.</p>
+  </div>
+  <div>
+    <h4>Oficjalne materiały</h4>
+    <p><a href="https://pomorska.bip.policja.gov.pl/KPG/pozwolenia-na-bron/40360,Baza-pytan-egzaminacyjnych.html">Baza pytań KWP Gdańsk</a></p>
+    <p><a href="https://eli.gov.pl/eli/DU/2023/1475/ogl/pol/pdf">Rozporządzenie o egzaminie (Dz.U. 2023 poz. 1475)</a></p>
+  </div>
+  <div>
+    <h4>Instruktor</h4>
+    <p>Krzysztof Panek, instruktor strzelectwa</p>
+    <p>Pytania i zapisy na kurs: zapytaj na zajęciach.</p>
+  </div>
+</div>
+<div class="wrap"><div class="copy">Serwis treningowy. Nie jest oficjalnym testem Policji. Sprawdzaj przepisy w aktualnym tekście ustawy.</div></div>
+</footer>
+
+<!-- KONFIGURACJA WYSYŁKI: uzupełnij dane z panelu EmailJS (instrukcja w README.md) -->
+<script>
+const CONFIG = {
+  EMAILJS_PUBLIC_KEY: "WSTAW_PUBLIC_KEY",
+  EMAILJS_SERVICE_ID: "WSTAW_SERVICE_ID",
+  EMAILJS_TEMPLATE_ID: "WSTAW_TEMPLATE_ID",
+  INSTRUCTOR_EMAIL: "twoj.adres@example.com", // adres, na który przychodzą zaliczenia
+  SEND_ON_FAIL: false                         // true = wysyłaj też wyniki niezdane
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js"></script>
+<script>
+// [pytanie, [A,B,C], indeks poprawnej, podstawa, wyjaśnienie, dział]
+const BANK = [
+["Amunicją w rozumieniu ustawy o broni i amunicji są:",["naboje przeznaczone do strzelania z broni pneumatycznej","naboje przeznaczone do strzelania z broni palnej","wszystkie naboje, bez względu na przeznaczenie"],1,"art. 4 ust. 3 u.b.a.","Ustawa definiuje amunicję wyłącznie jako naboje przeznaczone do strzelania z broni palnej.","Pojęcia"],
+["Istotną częścią broni palnej jest:",["muszka","sprężyna powrotna","szkielet broni"],2,"art. 5 ust. 2 u.b.a.","Istotne części broni palnej to: szkielet, baskila, lufa z komorą nabojową, zamek, komora zamkowa i bęben nabojowy.","Pojęcia"],
+["Istotną częścią broni palnej NIE jest:",["magazynek","lufa z komorą nabojową","zamek"],0,"art. 5 ust. 2 u.b.a.","Magazynka nie ma na liście istotnych części broni palnej.","Pojęcia"],
+["Istotną częścią broni palnej jest:",["chwyt","bęben nabojowy","szczerbinka"],1,"art. 5 ust. 2 u.b.a.","Bęben nabojowy (np. w rewolwerze) jest istotną częścią broni palnej.","Pojęcia"],
+["Gotowe lub obrobione istotne części broni lub amunicji:",["nie podlegają przepisom ustawy","wymagają jedynie zgłoszenia sprzedawcy","uważa się za broń lub amunicję"],2,"art. 5 ust. 1 u.b.a.","Istotne części traktuje się prawnie tak samo jak broń lub amunicję.","Pojęcia"],
+["Istotnymi częściami amunicji są m.in.:",["spłonki i proch strzelniczy","łuski","śrut"],0,"art. 5 ust. 3 u.b.a.","Istotne części amunicji to pociski wypełnione materiałami wybuchowymi, zapalającymi lub innymi substancjami, spłonki oraz proch strzelniczy.","Pojęcia"],
+["Przeróbki broni zmieniające jej rodzaj, kaliber lub przeznaczenie uważa się za:",["naprawę broni","wyrób broni","konserwację broni"],1,"art. 6 u.b.a.","Taka przeróbka jest traktowana jak wytworzenie broni, a robiona bez zezwolenia jest przestępstwem.","Pojęcia"],
+["Bronią palną jest przenośna broń lufowa, która miota pociski w wyniku działania:",["sprężonego gazu","energii elektrycznej","materiału miotającego"],2,"art. 7 ust. 1 u.b.a.","O broni palnej decyduje działanie materiału miotającego (prochu). Sprężony gaz to broń pneumatyczna.","Pojęcia"],
+["Broń sygnałowa ma lufę o kalibrze nie mniejszym niż:",["25 mm","12 mm","6 mm"],0,"art. 7 ust. 2 u.b.a.","Urządzenia sygnałowe muszą mieć lufę o kalibrze co najmniej 25 mm.","Pojęcia"],
+["Broń alarmowa razi cel wystrzeloną substancją na odległość nie większą niż:",["3 m","1 m","2 m"],1,"art. 7 ust. 3 u.b.a.","Broń alarmowa wywołuje głównie efekt akustyczny, a substancja razi cel najwyżej na 1 metr.","Pojęcia"],
+["Bronią pneumatyczną jest urządzenie, w którym energia kinetyczna pocisku opuszczającego lufę przekracza:",["13 J","15 J","17 J"],2,"art. 8 u.b.a.","Próg to 17 J. Poniżej niego urządzenie nie jest bronią pneumatyczną w rozumieniu ustawy.","Pojęcia"],
+["Pozwolenie na broń palną wydaje komendant wojewódzki Policji właściwy ze względu na:",["miejsce stałego pobytu wnioskodawcy","miejsce czasowego pobytu wnioskodawcy","miejsce, w którym broń będzie kupiona"],0,"art. 9 ust. 1 u.b.a.","Właściwość organu ustala się według miejsca stałego pobytu.","Pozwolenie"],
+["Pozwolenie na broń wydaje się:",["na 5 lat","na czas nieokreślony","na 10 lat"],1,"art. 9 ust. 6 u.b.a.","Pozwolenie, kartę rejestracyjną broni pozbawionej cech użytkowych i kartę broni pneumatycznej wydaje się na czas nieokreślony.","Pozwolenie"],
+["Pozwolenie na broń palną bojową do celów ochrony osobistej stanowi jednocześnie pozwolenie na:",["broń sportową","broń sygnałową","broń gazową i alarmową"],2,"art. 9 ust. 7 u.b.a.","Pozwolenie do ochrony osobistej lub ochrony osób i mienia obejmuje także broń gazową i alarmową.","Pozwolenie"],
+["Policja wydaje pozwolenie na broń, jeżeli wnioskodawca:",["nie stanowi zagrożenia dla siebie, porządku lub bezpieczeństwa publicznego i przedstawi ważną przyczynę","posiada sejf atestowany i ukończył kurs","jest członkiem dowolnego stowarzyszenia"],0,"art. 10 ust. 1 u.b.a.","Muszą być spełnione oba warunki: brak zagrożenia i ważna przyczyna posiadania broni.","Pozwolenie"],
+["Ważną przyczyną posiadania broni do celów kolekcjonerskich jest w szczególności:",["udział w wystawach broni","udokumentowane członkostwo w stowarzyszeniu o charakterze kolekcjonerskim","posiadanie kolekcji broni pozbawionej cech użytkowych"],1,"art. 10 ust. 3 u.b.a.","Ustawa wymaga udokumentowanego członkostwa w stowarzyszeniu o charakterze kolekcjonerskim.","Kolekcjonerska"],
+["Ważną przyczyną posiadania broni do celów pamiątkowych jest w szczególności:",["udokumentowane nabycie broni w drodze spadku, darowizny lub wyróżnienia","zakup broni historycznej w sklepie","członkostwo w klubie sportowym"],0,"art. 10 ust. 3 u.b.a.","Broń pamiątkowa to broń nabyta w drodze spadku, darowizny lub jako wyróżnienie.","Kolekcjonerska"],
+["Pozwolenie na broń do celów kolekcjonerskich może obejmować:",["wyłącznie broń wyprodukowaną przed 1885 r.","wyłącznie broń pozbawioną cech użytkowych","rodzaje broni wymienione w ustawie dla innych celów, np. ochrony osobistej, łowieckich czy sportowych"],2,"art. 10 ust. 4 u.b.a.","Pozwolenie kolekcjonerskie może obejmować broń przewidzianą przez ustawę dla pozostałych celów.","Kolekcjonerska"],
+["Pozwolenie na broń wydaje się w drodze:",["postanowienia","decyzji administracyjnej","zaświadczenia"],1,"art. 12 ust. 1 u.b.a.","Pozwolenie to decyzja administracyjna. Można się od niej odwołać.","Pozwolenie"],
+["W pozwoleniu na broń określa się:",["cel, w jakim zostało wydane, oraz rodzaj i liczbę egzemplarzy broni","wyłącznie markę i model broni","wyłącznie cel jego wydania"],0,"art. 12 ust. 1 u.b.a.","Pozwolenie określa cel, rodzaj broni i liczbę egzemplarzy.","Pozwolenie"],
+["Co do zasady pozwolenia na broń nie wydaje się osobie, która nie ukończyła:",["18 lat","25 lat","21 lat"],2,"art. 15 ust. 1 u.b.a.","Ogólny wymóg wieku to 21 lat. Wyjątki dotyczą broni łowieckiej i sportowej, na wniosek uprawnionych organizacji.","Pozwolenie"],
+["Pozwolenia na broń nie wydaje się m.in. osobie:",["uzależnionej od alkoholu lub substancji psychoaktywnych","bez wyższego wykształcenia","nieposiadającej prawa jazdy"],0,"art. 15 ust. 1 u.b.a.","Uzależnienie od alkoholu lub substancji psychoaktywnych wyklucza wydanie pozwolenia.","Pozwolenie"],
+["Pozwolenia na broń nie wydaje się osobie:",["mieszkającej w bloku","niemającej miejsca stałego pobytu na terytorium RP","pracującej za granicą"],1,"art. 15 ust. 1 u.b.a.","Brak miejsca stałego pobytu w Polsce jest przesłanką odmowy.","Pozwolenie"],
+["Obowiązek przedstawiania Policji orzeczeń lekarskich i psychologicznych raz na 5 lat dotyczy posiadaczy pozwolenia:",["do celów kolekcjonerskich","każdego rodzaju","do celów ochrony osobistej lub ochrony osób i mienia"],2,"art. 15 ust. 4 u.b.a.","Okresowe badania co 5 lat dotyczą pozwoleń do ochrony osobistej oraz ochrony osób i mienia.","Pozwolenie"],
+["Policja cofa pozwolenie na broń m.in., gdy jego posiadacz nosi broń, znajdując się w stanie:",["po użyciu alkoholu lub środka odurzającego","zmęczenia po pracy","po przyjęciu leków przeciwbólowych bez recepty"],0,"art. 18 ust. 1 u.b.a.","Noszenie broni po użyciu alkoholu, środka odurzającego lub substancji psychotropowej to obligatoryjna podstawa cofnięcia pozwolenia.","Obowiązki"],
+["Właściwy organ Policji może cofnąć pozwolenie na broń w przypadku:",["przechowywania broni w sejfie","używania broni palnej w celach szkoleniowych i sportowych poza strzelnicą","udziału w zawodach strzeleckich"],1,"art. 18 u.b.a.","Strzelanie szkoleniowe i sportowe odbywa się na strzelnicy. Używanie broni w tych celach poza nią może skutkować cofnięciem pozwolenia.","Obowiązki"],
+["Policja może odebrać broń za pokwitowaniem, gdy zachodzi podstawa do cofnięcia pozwolenia, a:",["posiadacz nie zapłacił opłaty","posiadacz zmienił adres","zwłoka zagrażałaby bezpieczeństwu publicznemu"],2,"art. 19 ust. 1 u.b.a.","Natychmiastowe odebranie broni jest możliwe, gdy zwłoka zagrażałaby bezpieczeństwu publicznemu.","Obowiązki"],
+["Zbywanie broni jest dopuszczalne pomiędzy osobami posiadającymi pozwolenie:",["na ten sam rodzaj broni","na jakąkolwiek broń palną","wydane przez ten sam organ Policji"],0,"art. 21 u.b.a.","Broń można zbyć tylko osobie, która ma pozwolenie na ten sam rodzaj broni. Zbywca informuje Policję na piśmie.","Obowiązki"],
+["Osoba, która utraciła uprawnienie do posiadania broni i nie zbyła jej, składa broń i amunicję do depozytu Policji w ciągu:",["7 dni","14 dni","30 dni"],2,"art. 22 u.b.a.","Broń trzeba zbyć niezwłocznie, a jeśli się to nie uda, w ciągu 30 dni złożyć ją do depozytu.","Obowiązki"],
+["O utracie broni należy zawiadomić Policję lub Żandarmerię Wojskową niezwłocznie, nie później jednak niż w ciągu:",["24 godzin od stwierdzenia utraty","3 dni od stwierdzenia utraty","7 dni od stwierdzenia utraty"],0,"art. 25 u.b.a.","Termin to 24 godziny od chwili stwierdzenia utraty broni.","Obowiązki"],
+["O zmianie miejsca stałego pobytu posiadacz pozwolenia zawiadamia pisemnie organ Policji w terminie:",["7 dni","14 dni","30 dni"],1,"art. 26 u.b.a.","Zawiadomienie składa się na piśmie w ciągu 14 dni od zmiany miejsca stałego pobytu.","Obowiązki"],
+["Broń i amunicję należy przechowywać i nosić w sposób:",["dowolny, jeśli broń jest rozładowana","uniemożliwiający dostęp do nich osób nieuprawnionych","wyłącznie w miejscu zamieszkania"],1,"art. 32 ust. 1 u.b.a.","Podstawowy obowiązek: osoby nieuprawnione nie mogą mieć dostępu do broni ani amunicji.","Obowiązki"],
+["Broń palną pozbawioną cech użytkowych można posiadać na podstawie:",["pozwolenia na broń kolekcjonerską","wyłącznie paragonu zakupu","karty rejestracyjnej broni pozbawionej cech użytkowych"],2,"art. 9 ust. 2 u.b.a.","Na broń pozbawioną cech użytkowych nie trzeba pozwolenia, ale potrzebna jest karta rejestracyjna.","Pojęcia"],
+["Kartę rejestracyjną broni pneumatycznej wydaje komendant Policji:",["powiatowy (miejski, rejonowy) właściwy ze względu na miejsce stałego pobytu","wojewódzki właściwy ze względu na miejsce zameldowania","Komendant Główny Policji"],0,"art. 9 ust. 4 u.b.a.","Broń pneumatyczną rejestruje komendant powiatowy (miejski, rejonowy) Policji według miejsca stałego pobytu.","Pozwolenie"],
+["Pozwolenie na broń do celów kolekcjonerskich wydaje się:",["tylko członkom PZSS","na czas nieokreślony, jak każde pozwolenie na broń","na okres członkostwa w stowarzyszeniu, nie dłużej niż 5 lat"],1,"art. 9 ust. 6 u.b.a.","Ustawa nie różnicuje okresu ważności pozwoleń według celu: każde jest bezterminowe.","Kolekcjonerska"],
+["Obrona konieczna polega na odpieraniu:",["bezpośredniego, bezprawnego zamachu na jakiekolwiek dobro chronione prawem","każdego zagrożenia, także przyszłego","zamachu wyłącznie na życie lub zdrowie"],0,"art. 25 § 1 k.k.","Nie popełnia przestępstwa, kto w obronie koniecznej odpiera bezpośredni, bezprawny zamach na jakiekolwiek dobro chronione prawem.","Kodeks karny"],
+["W razie przekroczenia granic obrony koniecznej sąd:",["zawsze wymierza karę bez złagodzenia","może zastosować nadzwyczajne złagodzenie kary, a nawet odstąpić od jej wymierzenia","musi umorzyć postępowanie"],1,"art. 25 § 2 k.k.","Przy przekroczeniu granic obrony koniecznej możliwe jest nadzwyczajne złagodzenie kary lub odstąpienie od jej wymierzenia.","Kodeks karny"],
+["Stan wyższej konieczności wymaga m.in., aby:",["dobro poświęcone przedstawiało wartość niższą od dobra ratowanego","sprawca był funkcjonariuszem","zamach był bezprawny"],0,"art. 26 § 1 k.k.","Chodzi o uchylenie bezpośredniego niebezpieczeństwa, którego nie można inaczej uniknąć, gdy poświęcone dobro jest mniej cenne od ratowanego.","Kodeks karny"],
+["Posiadanie broni palnej lub amunicji bez wymaganego zezwolenia jest:",["wykroczeniem","przestępstwem","jedynie naruszeniem administracyjnym"],1,"art. 263 § 2 k.k.","Nielegalne posiadanie broni palnej lub amunicji jest przestępstwem z Kodeksu karnego.","Kodeks karny"],
+["Wyrabianie broni palnej lub amunicji albo handel nimi bez wymaganego zezwolenia jest:",["wykroczeniem","przestępstwem","dozwolone dla posiadacza pozwolenia kolekcjonerskiego"],1,"art. 263 § 1 k.k.","Wyrób i handel bronią palną bez zezwolenia to przestępstwo, niezależnie od posiadanego pozwolenia na broń.","Kodeks karny"],
+["Na komendę prowadzącego strzelanie „STOP” strzelający:",["kończy rozpoczętą serię","natychmiast przerywa strzelanie","odkłada broń za siebie"],1,"regulamin strzelnicy","Komenda STOP oznacza natychmiastowe przerwanie strzelania i wykonywanie dalszych poleceń prowadzącego.","Strzelnica"],
+["Poza stanowiskiem strzeleckim broń na strzelnicy przenosi się:",["rozładowaną","załadowaną, ale zabezpieczoną","z dołączonym magazynkiem z amunicją"],0,"regulamin strzelnicy","Poza stanowiskiem broń jest zawsze rozładowana. Czynności z bronią wykonuje się wyłącznie na stanowisku, na polecenie prowadzącego.","Strzelnica"],
+["Na stanowisku strzeleckim wszystkie czynności z bronią wykonuje się z lufą skierowaną:",["w stronę stanowiska sąsiada","w górę, nad głową","w kierunku kulochwytu (osi strzelnicy)"],2,"regulamin strzelnicy","Lufa zawsze w bezpiecznym kierunku, czyli w stronę kulochwytu, także przy ładowaniu i usuwaniu zacięć.","Strzelnica"],
+["Osoba znajdująca się w stanie po użyciu alkoholu:",["może strzelać pod nadzorem instruktora","nie może być dopuszczona do strzelania","może strzelać, jeśli nie prowadzi później pojazdu"],1,"regulamin strzelnicy","Na strzelnicy obowiązuje zakaz strzelania po użyciu alkoholu lub środków odurzających.","Strzelnica"],
+["Podczas strzelania na strzelnicy należy bezwzględnie wykonywać polecenia:",["innych strzelających","osoby prowadzącej strzelanie","właściciela broni, jeśli jest obecny"],1,"regulamin strzelnicy","Prowadzący strzelanie odpowiada za jego przebieg. Jego polecenia są obowiązujące dla wszystkich na strzelnicy.","Strzelnica"],
+["Po niewypale (broń nie wystrzeliła po naciśnięciu spustu) strzelający powinien najpierw:",["od razu zajrzeć do lufy","odczekać z lufą w bezpiecznym kierunku i postępować według poleceń prowadzącego","odłożyć broń na stół i odejść ze stanowiska"],1,"zasady bezpieczeństwa","Nabój może odpalić z opóźnieniem. Lufa pozostaje w kierunku kulochwytu, a broń nie opuszcza stanowiska.","Strzelnica"]
+];
+
+const CATS=["Wszystkie",...[...new Set(BANK.map(q=>q[5]))]];
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+$("#bankCount").textContent=BANK.length;
+const sel=$("#cat");CATS.forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=c;sel.appendChild(o)});
+
+let S=null, tick=null;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){["start","login","quiz","result","wyniki"].forEach(v=>$("#v-"+v).hidden=v!==id);window.scrollTo(0,0)}
+function setNav(name){document.querySelectorAll("nav.main button").forEach(b=>b.toggleAttribute("aria-current",b.dataset.go===name)); document.querySelectorAll("nav.main button[aria-current]").forEach(b=>b.setAttribute("aria-current","page"))}
+
+function go(name){
+  clearInterval(tick);
+  if(name==="egzamin")askName();
+  else if(name==="nauka")startLearn("Wszystkie");
+  else if(name==="bledy")startMistakes();
+  else if(name==="wyniki"){renderHist();show("wyniki")}
+  else show("start");
+  setNav(name==="bledy"?"nauka":name);
+  if(location.hash!=="#"+name)history.replaceState(null,"","#"+name);
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b){e.preventDefault();go(b.dataset.go)}});
+
+const MAIL_READY = CONFIG.EMAILJS_PUBLIC_KEY && !CONFIG.EMAILJS_PUBLIC_KEY.startsWith("WSTAW");
+try{ if(MAIL_READY && window.emailjs) emailjs.init({publicKey:CONFIG.EMAILJS_PUBLIC_KEY}); }catch(e){}
+
+function askName(){
+  const p=store.get("kursant",{name:"",email:""});
+  $("#fName").value=p.name;$("#fMail").value=p.email;$("#loginErr").hidden=true;
+  show("login");$("#fName").focus();
+}
+$("#loginForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const name=$("#fName").value.trim(),email=$("#fMail").value.trim();
+  if(name.length<3){$("#loginErr").hidden=false;$("#fName").focus();return}
+  store.set("kursant",{name,email});startExam();
+});
+
+function mailText(r){
+  return "Kursant: "+r.student_name+(r.student_email?" ("+r.student_email+")":"")+"\nWynik: "+r.score+"/"+r.total+" ("+r.status+")\nCzas: "+r.duration_min+" min\nData: "+r.date;
+}
+function fallback(r,msg){
+  const subj="Egzamin próbny: "+r.status+" – "+r.student_name;
+  const href="mailto:"+CONFIG.INSTRUCTOR_EMAIL+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(mailText(r));
+  return '<div class="explain" style="border-color:var(--bad)"><b style="color:var(--bad)">'+msg+'</b>Wyślij wynik ręcznie na adres <b>'+CONFIG.INSTRUCTOR_EMAIL+'</b>: <a href="'+href+'">otwórz wiadomość w programie pocztowym</a>.<pre style="white-space:pre-wrap;margin:8px 0 0;font:inherit">'+mailText(r)+'</pre></div>';
+}
+function sendResult(ok,n,used){
+  const box=$("#mailStatus");if(!box)return;
+  const p=store.get("kursant",{name:"",email:""}),pass=ok>=18;
+  if(!pass&&!CONFIG.SEND_ON_FAIL){box.innerHTML="";return}
+  const r={to_email:CONFIG.INSTRUCTOR_EMAIL,student_name:p.name||"(brak)",student_email:p.email||"",score:ok,total:n,
+    status:pass?"ZALICZONY":"NIEZALICZONY",duration_min:used,date:new Date().toLocaleString("pl-PL")};
+  if(!MAIL_READY||!window.emailjs){box.innerHTML=fallback(r,"Automatyczna wysyłka nie jest skonfigurowana.");return}
+  box.innerHTML='<div class="explain"><b>Wysyłanie</b>Wysyłam wynik do instruktora…</div>';
+  emailjs.send(CONFIG.EMAILJS_SERVICE_ID,CONFIG.EMAILJS_TEMPLATE_ID,r).then(
+    ()=>{box.innerHTML='<div class="explain" style="border-color:var(--accent)"><b style="color:inherit">Wysłano</b>Instruktor dostał informację o Twoim wyniku.</div>'},
+    ()=>{box.innerHTML=fallback(r,"Nie udało się wysłać wyniku automatycznie.")}
+  );
+}
+
+function startExam(){
+  const idx=shuffle(BANK.map((_,i)=>i)).slice(0,20);
+  S={mode:"exam",idx,ans:Array(idx.length).fill(null),cur:0,end:Date.now()+30*60*1000};
+  $("#quizLabel").textContent="Egzamin";$("#quizLabel").className="label";
+  $("#quizTitle").textContent="Egzamin próbny";$("#catPick").hidden=true;
+  $("#timer").hidden=false;$("#finish").hidden=false;
+  tick=setInterval(updTimer,1000);updTimer();
+  show("quiz");render();
+}
+function startLearn(cat){
+  const idx=BANK.map((_,i)=>i).filter(i=>cat==="Wszystkie"||BANK[i][5]===cat);
+  S={mode:"learn",idx,ans:Array(idx.length).fill(null),cur:0};
+  $("#quizLabel").textContent="Nauka";$("#quizLabel").className="label info";
+  $("#quizTitle").textContent="Nauka: "+cat.toLowerCase();$("#catPick").hidden=false;sel.value=cat;
+  $("#timer").hidden=true;$("#finish").hidden=true;
+  show("quiz");render();
+}
+function startMistakes(){
+  const m=store.get("bledy",[]).filter(i=>i<BANK.length);
+  if(!m.length){
+    S=null;show("result");
+    $("#resultBox").innerHTML='<h2>Brak błędów do powtórki</h2><p style="margin:0;color:var(--muted)">Pytania, na które odpowiesz źle w egzaminie albo w nauce, pojawią się tutaj.</p><div class="cta-row"><button class="btn primary" data-go="egzamin">Zrób egzamin próbny</button></div>';
+    return;
+  }
+  S={mode:"learn",mist:true,idx:m,ans:Array(m.length).fill(null),cur:0};
+  $("#quizLabel").textContent="Powtórka";$("#quizLabel").className="label bad";
+  $("#quizTitle").textContent="Moje błędy ("+m.length+")";$("#catPick").hidden=true;
+  $("#timer").hidden=true;$("#finish").hidden=true;
+  show("quiz");render();
+}
+sel.addEventListener("change",()=>startLearn(sel.value));
+
+function updTimer(){
+  const left=Math.max(0,S.end-Date.now()),m=Math.floor(left/60000),s=Math.floor(left%60000/1000);
+  const t=$("#timer");t.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  t.classList.toggle("low",left<5*60000);
+  if(left<=0){clearInterval(tick);finish(true)}
+}
+
+function render(){
+  const n=S.idx.length,q=BANK[S.idx[S.cur]],a=S.ans[S.cur],learnDone=S.mode==="learn"&&a!==null;
+  $("#counter").textContent="Pytanie "+(S.cur+1)+" z "+n;
+  $("#bar").style.width=(S.ans.filter(x=>x!==null).length/n*100)+"%";
+  let h='<div class="meta">'+q[5]+(S.mode==="learn"||learnDone?" · "+q[3]:"")+'</div><h3>'+q[0]+'</h3><ul class="opts">';
+  q[1].forEach((o,i)=>{
+    let c="";
+    if(learnDone){if(i===q[2])c="ok";else if(i===a)c="no"}
+    else if(a===i)c="sel";
+    h+='<li><button class="opt '+c+'" data-i="'+i+'" '+(learnDone?"disabled":"")+' aria-pressed="'+(a===i)+'"><span class="let">'+"ABC"[i]+'</span><span>'+o+'</span></button></li>';
+  });
+  h+='</ul>';
+  if(learnDone)h+='<div class="explain"><b>'+(a===q[2]?"Dobrze":"Poprawna odpowiedź: "+"ABC"[q[2]])+' · '+q[3]+'</b>'+q[4]+'</div>';
+  $("#qBox").innerHTML=h;
+  $("#prev").disabled=S.cur===0;
+  $("#next").disabled=S.cur===n-1;
+  $("#finish").textContent="Zakończ egzamin";
+  const d=$("#dots");d.innerHTML="";
+  S.ans.forEach((x,i)=>{
+    const b=document.createElement("button");b.textContent=i+1;b.setAttribute("aria-label","Pytanie "+(i+1));
+    if(x!==null){b.className=S.mode==="learn"?(x===BANK[S.idx[i]][2]?"ok":"no"):"done"}
+    if(i===S.cur)b.classList.add("cur");
+    b.onclick=()=>{S.cur=i;render()};d.appendChild(b);
+  });
+}
+$("#qBox").addEventListener("click",e=>{
+  const b=e.target.closest(".opt");if(!b||b.disabled)return;
+  const i=+b.dataset.i;S.ans[S.cur]=i;
+  if(S.mode==="learn"){
+    const qi=S.idx[S.cur];let m=store.get("bledy",[]);
+    if(i!==BANK[qi][2]){if(!m.includes(qi))m.push(qi)}else m=m.filter(x=>x!==qi);
+    store.set("bledy",m);render();
+  }else{render();if(S.cur<S.idx.length-1)setTimeout(()=>{S.cur++;render()},250)}
+});
+$("#prev").onclick=()=>{if(S.cur>0){S.cur--;render()}};
+$("#next").onclick=()=>{if(S.cur<S.idx.length-1){S.cur++;render()}};
+$("#finish").onclick=()=>{
+  const open=S.ans.filter(x=>x===null).length;
+  if(open&&!S.confirm){S.confirm=true;$("#finish").textContent="Bez odpowiedzi: "+open+". Kliknij ponownie, by zakończyć";return}
+  finish(false);
+};
+
+function finish(timeout){
+  clearInterval(tick);
+  const ok=S.ans.filter((x,i)=>x===BANK[S.idx[i]][2]).length,n=S.idx.length,pass=ok>=18;
+  let m=store.get("bledy",[]);
+  S.idx.forEach((qi,i)=>{if(S.ans[i]!==BANK[qi][2]){if(!m.includes(qi))m.push(qi)}else m=m.filter(x=>x!==qi)});
+  store.set("bledy",m);
+  const used=Math.round((30*60*1000-Math.max(0,S.end-Date.now()))/60000);
+  const h=store.get("historia",[]);h.unshift({d:new Date().toISOString(),ok,n,min:used});store.set("historia",h.slice(0,50));
+  let r='<div class="verdict"><div class="score '+(pass?"pass":"fail")+'">'+ok+'/'+n+'</div><div class="stamp '+(pass?"pass":"fail")+'">'+(pass?"Zdany":"Niezdany")+'</div></div>';
+  r+='<p style="margin:0;color:var(--muted)">'+(timeout?"Czas minął. ":"")+'Próg zaliczenia: 18 poprawnych odpowiedzi. Czas: '+used+' min.</p><div id="mailStatus"></div>';
+  const wrong=S.idx.map((qi,i)=>[qi,S.ans[i]]).filter(([qi,a])=>a!==BANK[qi][2]);
+  if(wrong.length){
+    r+='<h3 style="font-size:26px">Do poprawy ('+wrong.length+')</h3><div class="review">';
+    wrong.forEach(([qi,a])=>{const q=BANK[qi];r+='<div class="item"><p><b>'+q[0]+'</b></p><p>Twoja odpowiedź: '+(a===null?"brak":"ABC"[a]+". "+q[1][a])+'</p><p>Poprawna: <b>'+"ABC"[q[2]]+". "+q[1][q[2]]+'</b></p><small>'+q[3]+' · '+q[4]+'</small></div>'});
+    r+='</div>';
+  }
+  r+='<div class="cta-row"><button class="btn primary" data-go="egzamin">Nowy egzamin</button><button class="btn" data-go="bledy">Powtórz błędy</button><button class="btn" data-go="wyniki">Moje wyniki</button></div>';
+  $("#resultBox").innerHTML=r;show("result");sendResult(ok,n,used);
+}
+
+function renderHist(){
+  const h=store.get("historia",[]),box=$("#histBox");
+  if(!h.length){box.innerHTML='<div class="empty">Nie masz jeszcze zapisanych egzaminów próbnych.</div>';return}
+  const passes=h.filter(x=>x.ok>=18).length;
+  let t='<p>Zdane: <b>'+passes+'</b> z '+h.length+'. Średni wynik: <b>'+(h.reduce((s,x)=>s+x.ok,0)/h.length).toFixed(1)+'/20</b>.</p><div style="overflow-x:auto"><table class="hist"><thead><tr><th>Data</th><th>Wynik</th><th>Czas</th><th>Status</th></tr></thead><tbody>';
+  h.forEach(x=>{const d=new Date(x.d);t+='<tr><td>'+d.toLocaleDateString("pl-PL")+' '+d.toLocaleTimeString("pl-PL",{hour:"2-digit",minute:"2-digit"})+'</td><td>'+x.ok+'/'+x.n+'</td><td>'+x.min+' min</td><td>'+(x.ok>=18?'<span class="label">zdany</span>':'<span class="label bad">niezdany</span>')+'</td></tr>'});
+  box.innerHTML=t+'</tbody></table></div>';
+}
+$("#clearHist").onclick=()=>{store.set("historia",[]);store.set("bledy",[]);renderHist()};
+
+const start=(location.hash||"#start").slice(1);
+go(["egzamin","nauka","wyniki","bledy"].includes(start)?start:"start");
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(["start","egzamin","nauka","wyniki","bledy"].includes(h))go(h)});
+</script>
+</body>
+</html>
