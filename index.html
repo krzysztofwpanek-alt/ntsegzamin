@@ -87,6 +87,7 @@ main{padding:36px 0 56px}
 .card .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
 .card h3{font-size:24px}
 .card p{margin:0;color:var(--muted)}
+.card .label{align-self:start}
 .card .more{margin-top:auto;align-self:start;background:var(--ink);color:var(--surface);border:0;padding:9px 16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:14px;border-radius:2px}
 .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px;color:var(--muted);font-size:14px}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
@@ -148,6 +149,14 @@ footer.site h4{font-family:var(--font-display);text-transform:uppercase;letter-s
 footer.site p{margin:0 0 6px;opacity:.85}
 footer.site a{color:var(--bar-ink)}
 .copy{border-top:1px solid color-mix(in srgb,var(--bar-ink) 15%,transparent);margin-top:22px;padding-top:14px;opacity:.6}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:40px;align-items:center}
+.coach{margin:0;position:relative;border:1px solid color-mix(in srgb,var(--bar-ink) 18%,transparent);background:#000}
+.coach img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;filter:saturate(.85)}
+.coach::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,11,15,.92));pointer-events:none}
+.coach figcaption{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;z-index:1;border-top:4px solid var(--accent)}
+.coach figcaption small{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.coach figcaption b{display:block;font-family:var(--font-display);font-size:26px;text-transform:uppercase;letter-spacing:.03em;line-height:1.05;color:#fff}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr}.coach{max-width:300px}}
 [hidden]{display:none!important}
 @media (max-width:640px){
   header.site .wrap{flex-direction:column;align-items:flex-start;padding:12px 20px}
@@ -160,7 +169,7 @@ footer.site a{color:var(--bar-ink)}
 
 <div class="topbar"><div class="wrap">
   <span>Szkolenie do egzaminu na pozwolenie na broń · cele kolekcjonerskie</span>
-  <span>Instruktor: Krzysztof Panek</span>
+  <span>Instruktor: Przemysław Wardowski</span>
 </div></div>
 
 <header class="site"><div class="wrap">
@@ -183,7 +192,7 @@ footer.site a{color:var(--bar-ink)}
 
 <!-- START -->
 <section id="v-start">
-  <div class="hero"><div class="wrap">
+  <div class="hero"><div class="wrap hero-grid"><div>
     <span class="label">Część teoretyczna</span>
     <h1 style="margin-top:12px">Sprawdź się przed komisją</h1>
     <p>20 losowych pytań jednokrotnego wyboru i 30 minut, tak jak na egzaminie przed Policją. Zdajesz przy co najmniej 18 poprawnych odpowiedziach. Po teście zobaczysz każdą pomyłkę z podstawą prawną.</p>
@@ -197,6 +206,11 @@ footer.site a{color:var(--bar-ink)}
       <div><b>18/20</b><span>próg zaliczenia</span></div>
       <div><b id="bankCount">–</b><span>pytań w bazie</span></div>
     </div>
+    </div>
+    <figure class="coach">
+      <img src="instruktor.jpg" alt="Instruktor Przemysław Wardowski" width="415" height="519">
+      <figcaption><small>Instruktor</small><b>Przemysław Wardowski</b></figcaption>
+    </figure>
   </div></div>
   <main><div class="wrap">
     <div class="section-head"><h2>Wybierz tryb</h2></div>
@@ -299,14 +313,14 @@ footer.site a{color:var(--bar-ink)}
     <p>Pytania przygotowane na podstawie ustawy o broni i amunicji (t.j. Dz.U. 2024 poz. 485 ze zm.), Kodeksu karnego i zasad bezpieczeństwa na strzelnicy.</p>
   </div>
   <div>
+    <h4>Instruktor</h4>
+    <p>Przemysław Wardowski</p>
+    <p>Pytania i zapisy na kurs: zapytaj na zajęciach.</p>
+  </div>
+  <div>
     <h4>Oficjalne materiały</h4>
     <p><a href="https://pomorska.bip.policja.gov.pl/KPG/pozwolenia-na-bron/40360,Baza-pytan-egzaminacyjnych.html">Baza pytań KWP Gdańsk</a></p>
     <p><a href="https://eli.gov.pl/eli/DU/2023/1475/ogl/pol/pdf">Rozporządzenie o egzaminie (Dz.U. 2023 poz. 1475)</a></p>
-  </div>
-  <div>
-    <h4>Instruktor</h4>
-    <p>Krzysztof Panek, instruktor strzelectwa</p>
-    <p>Pytania i zapisy na kurs: zapytaj na zajęciach.</p>
   </div>
 </div>
 <div class="wrap"><div class="copy">Serwis treningowy. Nie jest oficjalnym testem Policji. Sprawdzaj przepisy w aktualnym tekście ustawy.</div></div>
