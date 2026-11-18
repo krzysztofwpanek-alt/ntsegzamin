@@ -53,7 +53,8 @@ h1,h2,h3{font-family:var(--font-display);text-transform:uppercase;letter-spacing
 header.site{background:color-mix(in srgb,var(--bar) 92%,var(--accent));color:var(--bar-ink);border-bottom:4px solid var(--accent)}
 header.site .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px}
 .brand{display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none}
-.brand svg{flex:none}
+.brand img{flex:none}
+.brand-sep{width:1px;align-self:stretch;margin:4px 4px;background:color-mix(in srgb,var(--bar-ink) 30%,transparent)}
 .brand b{font-family:var(--font-display);font-size:26px;letter-spacing:.04em;text-transform:uppercase;display:block;line-height:1}
 .brand small{display:block;font-size:13px;opacity:.75;letter-spacing:.06em;text-transform:uppercase}
 nav.main{display:flex;gap:6px;flex-wrap:wrap}
@@ -168,18 +169,14 @@ footer.site a{color:var(--bar-ink)}
 <body>
 
 <div class="topbar"><div class="wrap">
-  <span>Szkolenie do egzaminu na pozwolenie na broń · cele kolekcjonerskie</span>
+  <span>NTS · szkolenie do egzaminu na pozwolenie na broń · cele kolekcjonerskie</span>
   <span>Instruktor: Przemysław Wardowski</span>
 </div></div>
 
 <header class="site"><div class="wrap">
-  <a class="brand" href="#start" aria-label="Strona główna">
-    <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
-      <circle cx="23" cy="23" r="20" fill="none" stroke="currentColor" stroke-width="3"/>
-      <circle cx="23" cy="23" r="12" fill="none" stroke="currentColor" stroke-width="3"/>
-      <circle cx="23" cy="23" r="4.5" fill="#a8d144"/>
-      <path d="M23 0v9M23 37v9M0 23h9M37 23h9" stroke="currentColor" stroke-width="3"/>
-    </svg>
+  <a class="brand" href="#start" aria-label="Strona główna – NTS, próbny egzamin">
+    <img src="nts-logo.png" alt="Nadwiślańskie Towarzystwo Strzeleckie" width="117" height="48" style="display:block;height:48px;width:auto">
+    <span class="brand-sep" aria-hidden="true"></span>
     <span><b>Próbny egzamin</b><small>pozwolenie na broń · teoria</small></span>
   </a>
   <nav class="main" aria-label="Menu główne">
@@ -309,7 +306,7 @@ footer.site a{color:var(--bar-ink)}
 
 <footer class="site"><div class="wrap">
   <div>
-    <h4>Próbny egzamin</h4>
+    <h4>Nadwiślańskie Towarzystwo Strzeleckie</h4>
     <p>Oficjalna baza 200 pytań egzaminacyjnych (KWP w Gdańsku). Poprawne odpowiedzi opracowano na podstawie ustawy o broni i amunicji (t.j. Dz.U. 2024 poz. 485 ze zm.) i Kodeksu karnego.</p>
   </div>
   <div>

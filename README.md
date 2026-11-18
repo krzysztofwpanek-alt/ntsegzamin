@@ -58,5 +58,5 @@ Dopóki EmailJS nie jest skonfigurowany albo gdy wysyłka się nie uda, kursant 
 ## Ważne
 
 - Test działa w przeglądarce kursanta, więc mail jest informacją, a nie dowodem zaliczenia. Osoba obeznana z technologią mogłaby wysłać fałszywy wynik. Wiążący sprawdzian najlepiej robić na zajęciach.
-- Baza pytań (tablica `BANK` w `index.html`) jest autorska i opiera się na ustawie o broni i amunicji (t.j. Dz.U. 2024 poz. 485 ze zm.) oraz Kodeksie karnym. Przed udostępnieniem sprawdź odpowiedzi. Każde pytanie ma format:
-  `["treść", ["A", "B", "C"], indeks_poprawnej (0=A, 1=B, 2=C), "podstawa prawna", "wyjaśnienie", "dział"]`
+- Baza pytań (tablica `BANK` w `index.html`) to oficjalne 200 pytań KWP w Gdańsku. Poprawne odpowiedzi ustalono na podstawie ustawy o broni i amunicji (t.j. Dz.U. 2024 poz. 485 ze zm.), rozporządzeń wykonawczych i Kodeksu karnego. Pytania, przy których odpowiedź wymaga potwierdzenia, są w pliku `do-weryfikacji.txt`. Każde pytanie ma format:
+  `["treść", ["A", "B", "C"], indeks_poprawnej (0=A, 1=B, 2=C), "podstawa prawna", "poprawna odpowiedź", "dział", nr_w_bazie]`
